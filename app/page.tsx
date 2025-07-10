@@ -16,15 +16,15 @@ const portfolioItems = [
   },
   {
     id: 3,
-    title: "The Agency Auditor",
-    image: "/taa.png?height=300&width=400",
-    link: "https://theagencyauditor.com/"
+    title: "FernCare Hub",
+    image: "/fh.png?height=300&width=400",
+    link: "https://ferncarehub.com/"
   },
   {
     id: 4,
-    title: "Al Hind Institute",
-    image: "/ahi.png?height=300&width=400",
-    link: "https://alhindinstitute.com/"
+    title: "The Agency Auditor",
+    image: "/taa.png?height=300&width=400",
+    link: "https://theagencyauditor.com/"
   },
   {
     id: 5,
@@ -77,7 +77,7 @@ export default function Portfolio() {
           <div className="max-w-3xl mx-auto">
             <div className="inline-flex items-center justify-center px-4 py-2 mb-6 rounded-full bg-orange-50 border border-orange-100">
               <span className="h-2 w-2 rounded-full bg-orange-500 mr-2 animate-pulse"></span>
-              <span className="text-sm font-medium text-orange-800">1 Project Slot Remaining This Month</span>
+              <span className="text-sm font-medium text-orange-800">One Slot Remaining This Month</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               Web Designer & Developer
