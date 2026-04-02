@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from "lucide-react"
 
@@ -6,53 +9,68 @@ const portfolioItems = [
     id: 1,
     title: "Detail it, Baby!",
     image: "/dib.png?height=300&width=400",
-    link: "https://detailitbaby.com/"
+    link: "https://detailitbaby.com/",
+    category: "Web"
   },
   {
     id: 2,
     title: "Royal Style",
     image: "/rs.png?height=300&width=400",
-    link: "https://royalstyle.in/"
+    link: "https://royalstyle.in/",
+    category: "Web"
   },
   {
     id: 3,
     title: "FernCare Hub",
     image: "/fh.png?height=300&width=400",
-    link: "https://ferncarehub.com/"
+    link: "https://ferncarehub.com/",
+    category: "Web"
   },
   {
     id: 4,
     title: "The Agency Auditor",
     image: "/taa.png?height=300&width=400",
-    link: "https://theagencyauditor.com/"
+    link: "https://theagencyauditor.com/",
+    category: "Apps"
   },
   {
     id: 5,
     title: "Lens Monk",
     image: "/lm.png?height=300&width=400",
-    link: "https://lensmonk.com/"
+    link: "https://lensmonk.com/",
+    category: "Web"
   },
   {
     id: 6,
     title: "Urban Hello",
     image: "/uh.png?height=300&width=400",
-    link: "https://urbanhello.in/"
+    link: "https://urbanhello.in/",
+    category: "Web"
   },
   {
     id: 7,
     title: "Hostneur",
     image: "/hostneur.png?height=300&width=400",
-    link: "https://hostneur.com/"
+    link: "https://hostneur.com/",
+    category: "Extensions"
   },
   {
     id: 8,
     title: "Travelestify",
     image: "/travelestify.png?height=300&width=400",
-    link: "https://travelestify.com/"
+    link: "https://travelestify.com/",
+    category: "Web"
   },
 ]
 
 export default function Portfolio() {
+  const [filter, setFilter] = useState("All")
+  const categories = ["All", "Web", "Apps", "Extensions"]
+
+  const filteredItems = filter === "All" 
+    ? portfolioItems 
+    : portfolioItems.filter(item => item.category === filter)
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -94,8 +112,25 @@ export default function Portfolio() {
               Featured Works
             </h2>
           </div>
+          
+          <div className="flex justify-center gap-2 mb-8 sticky top-[97px] z-40 overflow-x-auto pb-4 pt-4 bg-white/80 backdrop-blur-md backdrop-saturate-150 -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-white/20">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setFilter(category)}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-colors select-none whitespace-nowrap
+                  ${filter === category 
+                    ? "bg-orange-500 text-white shadow-md shadow-orange-500/20" 
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto relative z-20">
-            {portfolioItems.map((item) => (
+            {filteredItems.map((item) => (
               <a 
                 key={item.id}
                 href={item.link}
