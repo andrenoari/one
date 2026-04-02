@@ -1,71 +1,38 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink } from "lucide-react"
+import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Loader2 } from "lucide-react"
 
-const portfolioItems = [
-  {
-    id: 1,
-    title: "Detail it, Baby!",
-    image: "/dib.png?height=300&width=400",
-    link: "https://detailitbaby.com/",
-    category: "Web"
-  },
-  {
-    id: 2,
-    title: "Royal Style",
-    image: "/rs.png?height=300&width=400",
-    link: "https://royalstyle.in/",
-    category: "Web"
-  },
-  {
-    id: 3,
-    title: "FernCare Hub",
-    image: "/fh.png?height=300&width=400",
-    link: "https://ferncarehub.com/",
-    category: "Web"
-  },
-  {
-    id: 4,
-    title: "The Agency Auditor",
-    image: "/taa.png?height=300&width=400",
-    link: "https://theagencyauditor.com/",
-    category: "Apps"
-  },
-  {
-    id: 5,
-    title: "Lens Monk",
-    image: "/lm.png?height=300&width=400",
-    link: "https://lensmonk.com/",
-    category: "Web"
-  },
-  {
-    id: 6,
-    title: "Urban Hello",
-    image: "/uh.png?height=300&width=400",
-    link: "https://urbanhello.in/",
-    category: "Web"
-  },
-  {
-    id: 7,
-    title: "Hostneur",
-    image: "/hostneur.png?height=300&width=400",
-    link: "https://hostneur.com/",
-    category: "Extensions"
-  },
-  {
-    id: 8,
-    title: "Travelestify",
-    image: "/travelestify.png?height=300&width=400",
-    link: "https://travelestify.com/",
-    category: "Web"
-  },
-]
+type WorkList = {
+  id: number;
+  title: string;
+  image: string;
+  link: string;
+  category: string;
+};
 
 export default function Portfolio() {
+  const [portfolioItems, setPortfolioItems] = useState<WorkList[]>([])
   const [filter, setFilter] = useState("All")
-  const categories = ["All", "Web", "Apps", "Extensions"]
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchWorks = async () => {
+      try {
+        const res = await fetch("/api/works")
+        const { data } = await res.json()
+        if (data) setPortfolioItems(data)
+      } catch (error) {
+        console.error("Failed to fetch works", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchWorks()
+  }, [])
+
+  const categories = ["All", ...Array.from(new Set(portfolioItems.map(item => item.category)))]
 
   const filteredItems = filter === "All" 
     ? portfolioItems 
@@ -130,8 +97,17 @@ export default function Portfolio() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto relative z-20">
-            {filteredItems.map((item) => (
-              <a 
+            {isLoading ? (
+              <div className="col-span-1 lg:col-span-2 flex justify-center items-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+              </div>
+            ) : filteredItems.length === 0 ? (
+              <div className="col-span-1 lg:col-span-2 text-center py-20 text-muted-foreground">
+                No works found.
+              </div>
+            ) : (
+              filteredItems.map((item) => (
+                <a 
                 key={item.id}
                 href={item.link}
                 target="_blank"
@@ -170,7 +146,7 @@ export default function Portfolio() {
                   </div>
                 </div>
               </a>
-            ))}
+            )))}
           </div>
         </div>
       </main>
